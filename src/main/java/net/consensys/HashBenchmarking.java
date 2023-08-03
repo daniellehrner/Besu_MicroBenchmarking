@@ -39,7 +39,7 @@ public class HashBenchmarking {
     }
 
     @Benchmark
-    public Bytes32 benchmarkKeccakVersionjdk15on () {
+    public Bytes32 benchmarkKeccakVersionjdk18on () {
         return Hash.keccak256(bytes);
     }
 
