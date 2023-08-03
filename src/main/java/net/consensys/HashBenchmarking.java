@@ -43,8 +43,4 @@ public class HashBenchmarking {
         return Hash.keccak256(bytes);
     }
 
-    public static void main(String[] args) throws RunnerException, IOException {
-        org.openjdk.jmh.Main.main(args);
-    }
-
 }
