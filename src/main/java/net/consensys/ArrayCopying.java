@@ -1,8 +1,5 @@
 package net.consensys;
 
-import net.consensys.cryptohash.Keccak256;
-import net.consensys.data.Hash;
-import org.apache.tuweni.bytes.Bytes32;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -17,42 +14,47 @@ import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.runner.RunnerException;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-@Warmup(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
-@Fork(5)
+@Warmup(iterations = 0, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 0, time = 1, timeUnit = TimeUnit.SECONDS)
+@Fork(0)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 @State(Scope.Benchmark)
-public class HashBenchmarking {
+public class ArrayCopying {
 
-    @Param({"32"}) int SIZE;
-    Bytes32 bytes;
+    @Param({"1"}) int SIZE;
+    byte[] src;
+
     @Setup
-
     public void setup() {
-        byte[] src = new byte[SIZE];
+        src = new byte[SIZE];
         final Random r = new Random(7L);
         r.nextBytes(src);
-        bytes = Bytes32.wrap(src);
     }
 
     @Benchmark
-    public Bytes32 keccakBCVersionjdk15on () {
-        return Hash.keccak256(bytes);
+    public byte[] systemCopy() {
+        var dest = new byte[src.length];
+        System.arraycopy(src,0,dest,0, src.length);
+        return dest;
     }
 
-   /* @Benchmark
-    public Bytes32 keccakCryptoHash() {
-        return Bytes32.wrap(sha3(bytes));
-    }*/
+    @Benchmark
+    public byte[] arrayCopy() {
+        return Arrays.copyOf(src, src.length);
+    }
 
-    public static byte[] sha3(byte[] input) {
-        Keccak256 digest =  new Keccak256();
-        digest.update(input);
-        return digest.digest();
+    @Benchmark
+    public byte[] manualCopy() {
+        var dest = new byte[src.length];
+        for (int i = 0; i < src.length; i++) {
+            dest[i] = src[i];
+        }
+        return dest;
     }
 
     public static void main(String[] args) throws RunnerException, IOException {
