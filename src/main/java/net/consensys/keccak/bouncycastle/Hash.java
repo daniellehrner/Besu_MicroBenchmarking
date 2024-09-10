@@ -1,4 +1,4 @@
-package net.consensys.data;
+package net.consensys.keccak.bouncycastle;
 
 
 
@@ -11,10 +11,10 @@ import com.google.common.base.Suppliers;
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.bytes.Bytes32;
 
-import static net.consensys.data.MessageDigestFactory.BLAKE2BF_ALG;
-import static net.consensys.data.MessageDigestFactory.KECCAK256_ALG;
-import static net.consensys.data.MessageDigestFactory.RIPEMD160_ALG;
-import static net.consensys.data.MessageDigestFactory.SHA256_ALG;
+import static net.consensys.keccak.bouncycastle.MessageDigestFactory.BLAKE2BF_ALG;
+import static net.consensys.keccak.bouncycastle.MessageDigestFactory.KECCAK256_ALG;
+import static net.consensys.keccak.bouncycastle.MessageDigestFactory.RIPEMD160_ALG;
+import static net.consensys.keccak.bouncycastle.MessageDigestFactory.SHA256_ALG;
 
 /** Various utilities for providing hashes (digests) of arbitrary data. */
 public abstract class Hash {

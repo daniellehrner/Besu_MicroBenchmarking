@@ -1,6 +1,6 @@
 // $Id: DigestEngine.java 229 2010-06-16 20:22:27Z tp $
 
-package net.consensys.cryptohash;
+package net.consensys.keccak.cryptohash;
 
 /**
  * <p>This class is a template which can be used to implement hash

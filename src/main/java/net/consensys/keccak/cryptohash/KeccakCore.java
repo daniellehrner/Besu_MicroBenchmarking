@@ -1,6 +1,6 @@
 // $Id: KeccakCore.java 258 2011-07-15 22:16:50Z tp $
 
-package net.consensys.cryptohash;
+package net.consensys.keccak.cryptohash;
 
 /**
  * This class implements the core operations for the Keccak digest

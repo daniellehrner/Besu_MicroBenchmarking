@@ -1,4 +1,4 @@
-package net.consensys.data;
+package net.consensys.keccak.bouncycastle;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

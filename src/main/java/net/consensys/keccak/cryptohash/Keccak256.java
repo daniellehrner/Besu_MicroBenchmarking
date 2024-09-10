@@ -1,6 +1,6 @@
 // $Id: Keccak256.java 189 2010-05-14 21:21:46Z tp $
 
-package net.consensys.cryptohash;
+package net.consensys.keccak.cryptohash;
 
 /**
  * <p>This class implements the Keccak-256 digest algorithm under the
