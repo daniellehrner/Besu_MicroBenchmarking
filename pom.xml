@@ -7,7 +7,18 @@
     <groupId>org.example</groupId>
     <artifactId>Besu_MicroBenchmarking</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <repositories>
+        <repository>
+            <id>hyperledger-besu-maven</id>
+            <url>https://hyperledger.jfrog.io/hyperledger/besu-maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -43,9 +54,15 @@
         </dependency>
         <dependency>
             <groupId>org.hyperledger.besu</groupId>
-            <artifactId>keccak</artifactId>
-            <version>0.8.4-SNAPSHOT-TEST</version>
+            <artifactId>ipa-multipoint</artifactId>
+            <version>0.8.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.hyperledger.besu</groupId>
+            <artifactId>besu-verkle-trie</artifactId>
+            <version>0.0.1-TESTS2-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
