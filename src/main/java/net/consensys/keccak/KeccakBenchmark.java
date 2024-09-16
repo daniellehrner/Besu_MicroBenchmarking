@@ -5,6 +5,7 @@ import net.consensys.keccak.bouncycastle.Hash;
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.bytes.Bytes32;
 import org.hyperledger.besu.ethereum.trie.verkle.adapter.TrieKeyAdapter;
+import org.hyperledger.besu.ethereum.trie.verkle.hasher.PedersenHasher;
 import org.hyperledger.besu.nativelib.ipamultipoint.LibIpaMultipoint;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -54,8 +55,8 @@ public class KeccakBenchmark {
         byte[] srcAddress = new byte[ADDRESS_SIZE];
         r.nextBytes(srcAddress);
         address = Bytes.wrap(srcAddress);
-        trieKeyAdapter = new TrieKeyAdapter();
-        trieKeyAdapter.getStorageStem(address, bytes);
+        trieKeyAdapter = new TrieKeyAdapter(new PedersenHasher());
+        trieKeyAdapter.storageKey(address, bytes);
     }
 
     @Benchmark
@@ -66,7 +67,7 @@ public class KeccakBenchmark {
 
     @Benchmark
     public void stemCryptoHash(final Blackhole blackhole) {
-        Bytes storageStem = trieKeyAdapter.getStorageStem(address, bytes);
+        Bytes storageStem = trieKeyAdapter.storageKey(address, bytes);
         blackhole.consume(storageStem);
     }
 

@@ -15,7 +15,7 @@
                 <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>org.hyperledger.besu</groupId>
             <artifactId>besu-verkle-trie</artifactId>
-            <version>0.0.1-TESTS2-SNAPSHOT</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
