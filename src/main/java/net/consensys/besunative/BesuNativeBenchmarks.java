@@ -24,6 +24,7 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hyperledger.besu.crypto.Hash.keccak256;
@@ -42,12 +43,15 @@ public class BesuNativeBenchmarks {
     public void setup() {
         signatureAlgorithm = SignatureAlgorithmFactory.getInstance();
 
+        // Generate a random private key
         final SECPPrivateKey privateKey =
                 signatureAlgorithm.createPrivateKey(
-                        new BigInteger("c85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4", 16));
+                        new BigInteger(256, new java.security.SecureRandom()));
         final KeyPair keyPair = signatureAlgorithm.createKeyPair(privateKey);
 
-        final Bytes data = Bytes.wrap("This is an example of a signed message.".getBytes(UTF_8));
+        final Bytes data = Bytes.wrap(
+                ("This is a dynamically generated message: " + System.nanoTime()).getBytes(StandardCharsets.UTF_8));
+
         dataHash = keccak256(data);
         signature = signatureAlgorithm.sign(dataHash, keyPair);
     }
