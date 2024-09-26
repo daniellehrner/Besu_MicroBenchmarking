@@ -1,6 +1,5 @@
 package net.consensys.besunative;
 
-import net.consensys.setandlist.CollectionBenchmark;
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.bytes.Bytes32;
 import org.hyperledger.besu.crypto.KeyPair;
