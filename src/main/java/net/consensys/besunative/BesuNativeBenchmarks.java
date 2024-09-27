@@ -29,8 +29,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 import static org.hyperledger.besu.crypto.Hash.keccak256;
 
-@Warmup(iterations = 100, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 100, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 10000, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 1000, time = 1, timeUnit = TimeUnit.SECONDS)
 @Fork(1)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
