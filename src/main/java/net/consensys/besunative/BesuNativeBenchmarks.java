@@ -27,7 +27,6 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hyperledger.besu.crypto.Hash.keccak256;
 
 @Warmup(iterations = 100, time = 1, timeUnit = TimeUnit.SECONDS)
