@@ -1,6 +1,5 @@
 package net.consensys.setandlist;
 
-import net.consensys.arrays.ArrayCopyingBenchmark;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.profile.AsyncProfiler;
 import org.openjdk.jmh.runner.Runner;
