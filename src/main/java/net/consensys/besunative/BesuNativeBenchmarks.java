@@ -10,6 +10,7 @@ import org.hyperledger.besu.crypto.SignatureAlgorithmFactory;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
@@ -39,7 +40,7 @@ public class BesuNativeBenchmarks {
     SignatureAlgorithm signatureAlgorithm;
     Bytes32 dataHash;
     SECPSignature signature;
-    @Setup
+    @Setup(Level.Iteration)
     public void setup() {
         signatureAlgorithm = SignatureAlgorithmFactory.getInstance();
 
