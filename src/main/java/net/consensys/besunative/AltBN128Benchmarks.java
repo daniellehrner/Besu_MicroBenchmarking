@@ -13,15 +13,23 @@ import org.hyperledger.besu.evm.precompile.AltBN128MulPrecompiledContract;
 import org.hyperledger.besu.evm.precompile.AltBN128PairingPrecompiledContract;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.infra.Blackhole;
 
 @State(Scope.Benchmark)
 public class AltBN128Benchmarks {
 
     private MessageFrame fakeFrame;
+    private AltBN128AddPrecompiledContract addPrecompile;
+    private AltBN128MulPrecompiledContract mulPrecompile;
+    private AltBN128PairingPrecompiledContract pairingPrecompile;
+    private Bytes addArg;
+    private Bytes mulArg;
+    private Bytes pairingArg1;
+    private Bytes pairingArg2;
+    private Bytes pairingArg3;
 
     @Setup(Level.Iteration)
     public void setup() {
@@ -46,66 +54,35 @@ public class AltBN128Benchmarks {
                         .initialGas(100_000L)
                         .worldUpdater(new SimpleWorld())
                         .build();
-    }
 
-    @Benchmark
-    public void benchBNADD(Blackhole bh) {
-        final Bytes g1Point0 =
-                Bytes.concatenate(
-                        Bytes.fromHexString(
-                                "0x17c139df0efee0f766bc0204762b774362e4ded88953a39ce849a8a7fa163fa9"),
-                        Bytes.fromHexString(
-                                "0x01e0559bacb160664764a357af8a9fe70baa9258e0b959273ffc5718c6d4cc7c"));
+        final IstanbulGasCalculator gasCalculator = new IstanbulGasCalculator();
+        addPrecompile = AltBN128AddPrecompiledContract.istanbul(gasCalculator);
 
-        final Bytes g1Point1 =
-                Bytes.concatenate(
-                        Bytes.fromHexString(
-                                "0x17c139df0efee0f766bc0204762b774362e4ded88953a39ce849a8a7fa163fa9"),
-                        Bytes.fromHexString(
-                                "0x2e83f8d734803fc370eba25ed1f6b8768bd6d83887b87165fc2434fe11a830cb"));
-        final Bytes arg = Bytes.concatenate(g1Point0, g1Point1);
+        Bytes g1AddPoint0 = Bytes.concatenate(
+                Bytes.fromHexString("0x17c139df0efee0f766bc0204762b774362e4ded88953a39ce849a8a7fa163fa9"),
+                Bytes.fromHexString("0x01e0559bacb160664764a357af8a9fe70baa9258e0b959273ffc5718c6d4cc7c"));
+        Bytes g1AddPoint1 = Bytes.concatenate(
+                Bytes.fromHexString("0x17c139df0efee0f766bc0204762b774362e4ded88953a39ce849a8a7fa163fa9"),
+                Bytes.fromHexString("0x2e83f8d734803fc370eba25ed1f6b8768bd6d83887b87165fc2434fe11a830cb"));
+        addArg = Bytes.concatenate(g1AddPoint0, g1AddPoint1);
 
-        final AltBN128AddPrecompiledContract contract =
-                AltBN128AddPrecompiledContract.istanbul(new IstanbulGasCalculator());
+        mulPrecompile = AltBN128MulPrecompiledContract.istanbul(gasCalculator);
 
-        bh.consume(contract.computePrecompile(arg, fakeFrame));
-    }
+        Bytes g1MulPoint = Bytes.concatenate(
+                Bytes.fromHexString("0x0000000000000000000000000000000000000000000000000000000000000001"),
+                Bytes.fromHexString("0x30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd45"));
+        Bytes mulScalar = Bytes.fromHexString("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        mulArg = Bytes.concatenate(g1MulPoint, mulScalar);
 
-    @Benchmark
-    public void benchBNMUL(Blackhole bh) {
-        final Bytes g1Point1 =
-                Bytes.concatenate(
-                        Bytes.fromHexString(
-                                "0x0000000000000000000000000000000000000000000000000000000000000001"),
-                        Bytes.fromHexString(
-                                "0x30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd45"));
-        final Bytes scalar =
-                Bytes.fromHexString("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        final Bytes arg = Bytes.concatenate(g1Point1, scalar);
-
-        final AltBN128MulPrecompiledContract contract =
-                AltBN128MulPrecompiledContract.istanbul(new IstanbulGasCalculator());
-
-        bh.consume(contract.computePrecompile(arg, fakeFrame));
-    }
-
-    @Benchmark
-    public void benchBNPairing1(Blackhole bh) {
-        final Bytes arg = Bytes.fromHexString(
+        pairingPrecompile = AltBN128PairingPrecompiledContract.istanbul(gasCalculator);
+        pairingArg1 = Bytes.fromHexString(
                 "0x0fc6ebd1758207e311a99674dc77d28128643c057fb9ca2c92b4205b6bf57ed2"
                         + "1e50042f97b7a1f2768fa15f6683eca9ee7fa8ee655d94246ab85fb1da3f0b90"
                         + "198e9393920d483a7260bfb731fb5d25f1aa493335a9e71297e485b7aef312c2"
                         + "1800deef121f1e76426a00665e5c4479674322d4f75edadd46debd5cd992f6ed"
                         + "090689d0585ff075ec9e99ad690c3395bc4b313370b38ef355acdadcd122975b"
                         + "12c85ea5db8c6deb4aab71808dcb408fe3d1e7690c43d37b4ce6cc0166fa7daa");
-        final AltBN128PairingPrecompiledContract contract =
-                AltBN128PairingPrecompiledContract.istanbul(new IstanbulGasCalculator());
-        bh.consume(contract.computePrecompile(arg, fakeFrame));
-    }
-
-    @Benchmark
-    public void benchBNPairing2(Blackhole bh) {
-        final Bytes arg = Bytes.fromHexString(
+        pairingArg2 = Bytes.fromHexString(
                 "0x2b101be01b2f064cba109e065dc0b5e5bf6b64ed4054b82af3a7e6e34c1e2005"
                         + "1a4d9ceecf9115a98efd147c4abb2684102d3e925938989153b9ff330523cdb4"
                         + "08d554bf59102bbb961ba81107ec71785ef9ce6638e5332b6c1a58b87447d181"
@@ -118,14 +95,7 @@ public class AltBN128Benchmarks {
                         + "2acded377df8902b7a75de6c0f53c161f3a2ff3f374470b78d5b3c4d826d84d5"
                         + "1731ef3b84913296c30a649461b2ca35e3fcc2e3031ea2386d32f885ff096559"
                         + "0919e7685f6ea605db14f311dede6e83f21937f05cfc53ac1dbe45891c47bf2a");
-        final AltBN128PairingPrecompiledContract contract =
-                AltBN128PairingPrecompiledContract.istanbul(new IstanbulGasCalculator());
-        bh.consume(contract.computePrecompile(arg, fakeFrame));
-    }
-
-    @Benchmark
-    public void benchBNPairing3(Blackhole bh) {
-        final Bytes arg = Bytes.fromHexString(
+        pairingArg3 = Bytes.fromHexString(
                 "0x1a3fabea802788c8aa88741c6a68f271b221eb75838bb1079381f3f1ae414f40"
                         + "126308d6cdb6b7efceb1ec0016b99cf7a1e5780f5a9a775d43bc7f2b6fd510e2"
                         + "11b35cf2c85531eab64b96eb2eef487e0eb60fb9207fe4763e7f6e02dcead646"
@@ -144,8 +114,30 @@ public class AltBN128Benchmarks {
                         + "0664e736b2af7bf9125f69fe5c3706cd893cd769b1dae8a6e3d639e2d76e66e2"
                         + "1cacce8776f5ada6b35036f9343faab26c91b9aea83d3cb59cf5628ffe18ab1b"
                         + "03b48ca7e6d84fca619aaf81745fbf9c30e5a78ed4766cc62b0f12aea5044f56");
-        final AltBN128PairingPrecompiledContract contract =
-                AltBN128PairingPrecompiledContract.istanbul(new IstanbulGasCalculator());
-        bh.consume(contract.computePrecompile(arg, fakeFrame));
+    }
+
+    @Benchmark
+    public void benchBNADD(Blackhole bh) {
+        bh.consume(addPrecompile.computePrecompile(addArg, fakeFrame));
+    }
+
+    @Benchmark
+    public void benchBNMUL(Blackhole bh) {
+        bh.consume(mulPrecompile.computePrecompile(mulArg, fakeFrame));
+    }
+
+    @Benchmark
+    public void benchBNPairing1(Blackhole bh) {
+        bh.consume(pairingPrecompile.computePrecompile(pairingArg1, fakeFrame));
+    }
+
+    @Benchmark
+    public void benchBNPairing2(Blackhole bh) {
+        bh.consume(pairingPrecompile.computePrecompile(pairingArg2, fakeFrame));
+    }
+
+    @Benchmark
+    public void benchBNPairing3(Blackhole bh) {
+        bh.consume(pairingPrecompile.computePrecompile(pairingArg3, fakeFrame));
     }
 }
