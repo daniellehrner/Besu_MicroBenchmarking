@@ -7,6 +7,9 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class BesuNativeBenchmarks {
@@ -19,16 +22,24 @@ public class BesuNativeBenchmarks {
     //  Ripe?
 
     public static void main(String[] args) throws Exception {
-        boolean withProfiling = args.length > 0 && args[0].equals("--profile");
+        Set<String> argsSet = new HashSet<>(Arrays.asList(args));
+        boolean withProfiling = args.length > 0 && argsSet.contains("--profile");
+
+        int iterations = argsSet.stream()
+                .filter(a -> a.startsWith("--iterations=") || a.startsWith("-i="))
+                .map(a -> a.split("=")[1])
+                .findFirst()
+                .map(Integer::parseInt)
+                .orElse(50);
 
         var optsBuilder = new OptionsBuilder()
                 .include(EcRecoverBenchmarks.class.getSimpleName())
                 .include(ModExpBenchmarks.class.getSimpleName())
                 .include(AltBN128Benchmarks.class.getSimpleName())
                 .include(BLS12Benchmarks.class.getSimpleName())
-                .warmupIterations(50)
+                .warmupIterations(iterations)
                 .warmupTime(TimeValue.seconds(1))
-                .measurementIterations(50)
+                .measurementIterations(iterations)
                 .measurementTime(TimeValue.seconds(1))
                 .forks(1)
                 .mode(Mode.AverageTime)
