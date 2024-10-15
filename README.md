@@ -8,7 +8,7 @@ AsyncProfiler setup:
 ## Building
 
 ```shell
-mvn clean install
+mvn install
 ```
 
 ## Running
@@ -23,4 +23,14 @@ java -jar target/Besu_MicroBenchmarking-1.0-SNAPSHOT.jar
 
 ```shell
 java -XX:+UnlockDiagnosticVMOptions -jar target/Besu_MicroBenchmarking-1.0-SNAPSHOT.jar --profile async:output=jfr;event=cpu
+```
+
+### Configure iterations (defaults to 50 for warmup, 50 for measurement)
+
+```shell
+java -jar target/Besu_MicroBenchmarking-1.0-SNAPSHOT.jar --iterations=1
+```
+or
+```shell
+java -jar target/Besu_MicroBenchmarking-1.0-SNAPSHOT.jar -i=1
 ```
