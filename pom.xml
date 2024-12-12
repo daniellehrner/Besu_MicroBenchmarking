@@ -83,21 +83,48 @@
         <dependency>
             <groupId>org.hyperledger.besu.internal</groupId>
             <artifactId>algorithms</artifactId>
-            <version>24.9.1</version>
+            <version>24.10.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.hyperledger.besu/evm -->
         <dependency>
             <groupId>org.hyperledger.besu</groupId>
             <artifactId>evm</artifactId>
-            <version>24.9.1</version>
+            <version>24.10.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.hyperledger.besu/besu-datatypes -->
         <dependency>
             <groupId>org.hyperledger.besu</groupId>
             <artifactId>besu-datatypes</artifactId>
-            <version>24.9.1</version>
+            <version>24.10.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.hyperledger.besu.internal/core -->
+        <dependency>
+            <groupId>org.hyperledger.besu.internal</groupId>
+            <artifactId>core</artifactId>
+            <version>24.10.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hyperledger.besu.internal/kvstore -->
+        <dependency>
+            <groupId>org.hyperledger.besu.internal</groupId>
+            <artifactId>kvstore</artifactId>
+            <version>24.10.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hyperledger.besu.internal/config -->
+        <dependency>
+            <groupId>org.hyperledger.besu.internal</groupId>
+            <artifactId>config</artifactId>
+            <version>24.10.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hyperledger.besu.internal/metrics-core -->
+        <dependency>
+            <groupId>org.hyperledger.besu.internal</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>24.10.0</version>
+        </dependency>
 
 
     </dependencies>
@@ -117,7 +144,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>net.consensys.besunative.BesuNativeBenchmarks</mainClass>
+                                    <mainClass>net.consensys.codedelegation.CodeDelegationProcessorBenchmark</mainClass>
                                 </transformer>
                             </transformers>
                             <filters>
